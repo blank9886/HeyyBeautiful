@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Magical Love Story</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.9.3/tsparticles.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        .script-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        #tsparticles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .memory-card {
+            perspective: 1000px;
+        }
+        .memory-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .memory-card.flipped .memory-card-inner {
+            transform: rotateY(180deg);
+        }
+        .memory-card-front, .memory-card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .memory-card-back {
+            transform: rotateY(180deg);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translate(0,  0px); }
+            50%  { transform: translate(0, 15px); }
+            100%   { transform: translate(0, -0px); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .sparkle {
+            animation: sparkle 1.5s infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        .love-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear alternate infinite;
+        }
+        @keyframes dash {
+            from {
+                stroke-dashoffset: 1000;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: firework 2s ease-out infinite;
+        }
+        @keyframes firework {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+        }
+        .heart-beat {
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .rotate-3d {
+            animation: rotate3d 10s linear infinite;
+        }
+        @keyframes rotate3d {
+            0% { transform: rotate3d(0, 1, 0, 0deg); }
+            100% { transform: rotate3d(0, 1, 0, 360deg); }
+        }
+        .confetti {
+            width: 15px;
+            height: 15px;
+            background-color: #f2d74e;
+            position: absolute;
+            left: 50%;
+            animation: confetti 5s ease-in-out -2s infinite;
+            transform-origin: left top;
+        }
+        .confetti:nth-child(1) {
+            background-color: #f2d74e; left: 10%; animation-delay: 0;
+        }
+        .confetti:nth-child(2) {
+            background-color: #95c3de; left: 20%; animation-delay: -5s;
+        }
+        .confetti:nth-child(3) {
+            background-color: #ff9a91; left: 30%; animation-delay: -3s;
+        }
+        .confetti:nth-child(4) {
+            background-color: #f2d74e; left: 40%; animation-delay: -2.5s;
+        }
+        .confetti:nth-child(5) {
+            background-color: #95c3de; left: 50%; animation-delay: -4s;
+        }
+        .confetti:nth-child(6) {
+            background-color: #ff9a91; left: 60%; animation-delay: -6s;
+        }
+        .confetti:nth-child(7) {
+            background-color: #f2d74e; left: 70%; animation-delay: -1.5s;
+        }
+        .confetti:nth-child(8) {
+            background-color: #95c3de; left: 80%; animation-delay: -2s;
+        }
+        .confetti:nth-child(9) {
+            background-color: #ff9a91; left: 90%; animation-delay: -3.5s;
+        }
+        .confetti:nth-child(10) {
+            background-color: #f2d74e; left: 100%; animation-delay: -2.5s;
+        }
+
+        @keyframes confetti {
+            0% { transform: rotateZ(15deg) rotateY(0deg) translate(0,0); }
+            25% { transform: rotateZ(5deg) rotateY(360deg) translate(-5vw,20vh); }
+            50% { transform: rotateZ(15deg) rotateY(720deg) translate(5vw,60vh); }
+            75% { transform: rotateZ(5deg) rotateY(1080deg) translate(-10vw,80vh); }
+            100% { transform: rotateZ(15deg) rotateY(1440deg) translate(10vw,110vh); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-100 to-purple-200 min-h-screen">
+    <div id="tsparticles"></div>
+    
+    <header class="py-8 px-4 mb-12">
+        <div class="max-w-4xl mx-auto bg-white bg-opacity-80 rounded-lg shadow-lg overflow-hidden">
+            <div class="relative h-64 bg-pink-200">
+                <div id="headerAnimation" class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                        <h1 class="script-font text-4xl md:text-6xl text-pink-600 mb-2">Our Love Story</h1>
+                        <p class="text-lg md:text-xl text-gray-700">A journey of two hearts becoming one</p>
+                    </div>
+                </div>
+                <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+                    <path class="love-path" fill="none" stroke="rgba(236, 72, 153, 0.3)" stroke-width="5" d="M0,160 C320,300,420,300,720,192 C1020,84,1120,84,1440,224 V320 H0 Z" />
+                </svg>
+            </div>
+            <div class="p-6">
+                <div id="typingText" class="text-gray-700 text-center"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 md:py-16 relative">
+        <section id="memories" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <div class="memory-card bg-transparent cursor-pointer h-64" tabindex="0">
+                <div class="memory-card-inner h-full">
+                    <div class="memory-card-front bg-white rounded-lg shadow-lg p-6 flex flex-col justify-center items-center h-full">
+                        <h2 class="script-font text-2xl text-pink-500 mb-4">Our First Date</h2>
+                        <p class="text-gray-600">Tap to reveal a special memory</p>
+                    </div>
+                    <div class="memory-card-back bg-pink-100 rounded-lg shadow-lg p-6 flex flex-col justify-center items-center h-full">
+                        <p class="text-gray-700">"In your eyes, I found the missing piece of my soul. Our first date was the beginning of our forever."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="memory-card bg-transparent cursor-pointer h-64" tabindex="0">
+                <div class="memory-card-inner h-full">
+                    <div class="memory-card-front bg-white rounded-lg shadow-lg p-6 flex flex-col justify-center items-center h-full">
+                        <h2 class="script-font text-2xl text-pink-500 mb-4">Our Adventures</h2>
+                        <p class="text-gray-600">Tap to reveal a special memory</p>
+                    </div>
+                    <div class="memory-card-back bg-pink-100 rounded-lg shadow-lg p-6 flex flex-col justify-center items-center h-full">
+                        <p class="text-gray-700">"With you, every day is an adventure. Your love turns ordinary moments into extraordinary memories."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="memory-card bg-transparent cursor-pointer h-64" tabindex="0">
+                <div class="memory-card-inner h-full">
+                    <div class="memory-card-front bg-white rounded-lg shadow-lg p-6 flex flex-col justify-center items-center h-full">
+                        <h2 class="script-font text-2xl text-pink-500 mb-4">Your Smile</h2>
+                        <p class="text-gray-600">Tap to reveal a special memory</p>
+                    </div>
+                    <div class="memory-card-back bg-pink-100 rounded-lg shadow-lg p-6 flex flex-col justify-center items-center h-full">
+                        <p class="text-gray-700">"Your smile is the sun that brightens my darkest days. It's the light that guides me home."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="memory-card bg-transparent cursor-pointer h-64" tabindex="0">
+                <div class="memory-card-inner h-full">
+                    <div class="memory-card-front bg-white rounded-lg shadow-lg p-6 flex flex-col justify-center items-center h-full">
+                        <h2 class="script-font text-2xl text-pink-500 mb-4">Our Love</h2>
+                        <p class="text-gray-600">Tap to reveal a special memory</p>
+                    </div>
+                    <div class="memory-card-back bg-pink-100 rounded-lg shadow-lg p-6 flex flex-col justify-center items-center h-full">
+                        <p class="text-gray-700">"Our love is a masterpiece, painted with the colors of trust, respect, and endless affection."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="loveSong" class="mb-16 text-center">
+            <h2 class="script-font text-3xl text-pink-600 mb-4">Our Love Song</h2>
+            <button id="playSongBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transform hover:scale-110 transition duration-300 pulse">
+                Play Our Song
+            </button>
+            <div id="audioVisualizer" class="mt-4 flex justify-center items-center h-16">
+                <!-- Audio visualizer bars will be dynamically added here -->
+            </div>
+        </section>
+
+        <section id="loveQuotes" class="mb-16">
+            <h2 class="script-font text-3xl text-pink-600 mb-4 text-center">Words of Love</h2>
+            <div id="quoteContainer" class="bg-white rounded-lg shadow-lg p-6 text-center relative overflow-hidden">
+                <p id="quoteText" class="text-gray-700 italic relative z-10"></p>
+                <div class="absolute top-2 left-2 text-4xl opacity-25 transform -rotate-12">❝</div>
+                <div class="absolute bottom-2 right-2 text-4xl opacity-25 transform rotate-12">❞</div>
+            </div>
+        </section>
+
+        <section id="loveStory" class="mb-16">
+            <h2 class="script-font text-3xl text-pink-600 mb-8 text-center">Our Love Story</h2>
+            <div id="storyContainer" class="bg-white rounded-lg shadow-lg p-6">
+                <div id="storyText" class="text-gray-700"></div>
+                <div class="mt-4 flex justify-center">
+                    <button id="prevStory" class="bg-pink-500 text-white px-4 py-2 rounded-l-full">&larr; Previous</button>
+                    <button id="nextStory" class="bg-pink-500 text-white px-4 py-2 rounded-r-full">Next &rarr;</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="loveTimeline" class="mb-16">
+            <h2 class="script-font text-3xl text-pink-600 mb-8 text-center">Our Journey Together</h2>
+            <div class="relative">
+                <div class="absolute h-full w-1 bg-pink-300 left-1/2 transform -translate-x-1/2"></div>
+                <div id="timelineEvents" class="relative">
+                    <!-- Timeline events will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+
+        <section id="proposal" class="text-center mb-16">
+            <h2 class="script-font text-3xl md:text-5xl text-pink-600 mb-4">My Eternal Love</h2>
+            <p class="text-lg md:text-xl text-gray-700 mb-8">
+                You are the rhythm of my heartbeat, the melody of my soul, and the harmony in my life.
+                Every moment with you is a beautiful symphony, and I want our love song to play forever.
+            </p>
+            <div id="proposalMessage" class="script-font text-4xl md:text-6xl text-pink-600 mb-8">
+                Tap the heart to unveil my heart's deepest desire
+            </div>
+            <div class="flex justify-center items-center">
+                <button id="revealBtn" class="text-6xl transform hover:scale-110 transition duration-300 floating" aria-label="Reveal proposal">
+                    ❤️
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Enhanced particle effect
+        tsParticles.load("tsparticles", {
+            particles: {
+                number: {
+                    value: 30,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ff69b4"
+                },
+                shape: {
+                    type: "heart"
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 4,
+                        size_min: 0.3,
+                        sync: false
+                    }
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    repulse: {
+                        distance: 100,
+                        duration: 0.4
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Header animation
+        const headerAnimation = gsap.timeline({ repeat: -1, yoyo: true });
+        headerAnimation.to("#headerAnimation", { y: -20, duration: 2, ease: "power1.inOut" });
+
+        // Typing effect
+        const text = "Every day with you is a new page in our beautiful love story...";
+        let i = 0;
+        const speed = 50;
+
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typingText").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        typeWriter();
+
+        // Memory card animations
+        const memoryCards = document.querySelectorAll('.memory-card');
+        memoryCards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+            card.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    card.classList.toggle('flipped');
+                }
+            });
+            gsap.from(card, {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                }
+            });
+        });
+
+        // Love quotes animation
+        const quotes = [
+            "Love is not about how many days, months, or years you have been together. Love is about how much you love each other every single day.",
+            "I love you not only for what you are, but for what I am when I am with you.",
+            "You are my today and all of my tomorrows.",
+            "In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.",
+            "I choose you. And I'll choose you over and over and over. Without pause, without a doubt, in a heartbeat. I'll keep choosing you."
+        ];
+
+        let currentQuote = 0;
+        const quoteText = document.getElementById('quoteText');
+
+        function changeQuote() {
+            gsap.to(quoteText, { opacity: 0, duration: 0.5, onComplete: () => {
+                quoteText.textContent = quotes[currentQuote];
+                gsap.to(quoteText, { opacity: 1, duration: 0.5 });
+                currentQuote = (currentQuote + 1) % quotes.length;
+            }});
+        }
+
+        setInterval(changeQuote, 5000);
+        changeQuote();
+
+        // Background music and visualizer
+        const playSongBtn = document.getElementById('playSongBtn');
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let audioSource;
+        let analyser;
+
+        // Load the audio file
+        const audioFile = 'audio.mp3'; // Replace with your actual audio file path
+
+        fetch(audioFile)
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+            .then(audioBuffer => {
+                playSongBtn.addEventListener('click', function() {
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume();
+                    }
+
+                    if (audioSource) {
+                        audioSource.stop();
+                        audioSource = null;
+                        playSongBtn.textContent = 'Play Our Song';
+                        return;
+                    }
+
+                    audioSource = audioContext.createBufferSource();
+                    audioSource.buffer = audioBuffer;
+                    analyser = audioContext.createAnalyser();
+                    audioSource.connect(analyser);
+                    analyser.connect(audioContext.destination);
+                    audioSource.start();
+                    playSongBtn.textContent = 'Pause Our Song';
+                    visualize();
+                });
+            })
+            .catch(e => {
+                console.error('Error with audio playback:', e);
+                playSongBtn.textContent = 'Unable to Play (Try Again)';
+            });
+
+        function visualize() {
+            const visualizer = document.getElementById('audioVisualizer');
+            visualizer.innerHTML = '';
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            for (let i = 0; i < bufferLength; i++) {
+                const bar = document.createElement('div');
+                bar.classList.add('bg-pink-500', 'w-1', 'mx-px');
+                visualizer.appendChild(bar);
+            }
+
+            function renderFrame() {
+                analyser.getByteFrequencyData(dataArray);
+                const bars = visualizer.children;
+                for (let i = 0; i < bufferLength; i++) {
+                    const barHeight = dataArray[i] / 2;
+                    bars[i].style.height = barHeight + 'px';
+                }
+                requestAnimationFrame(renderFrame);
+            }
+
+            renderFrame();
+        }
+
+        // Love Story Slideshow
+        const storyText = document.getElementById('storyText');
+        const prevStory = document.getElementById('prevStory');
+        const nextStory = document.getElementById('nextStory');
+        const storySlides = [
+            "It all began with a chance encounter...",
+            "Remember that first day in vishnu park ... tht gaze of your eyes are the most precious...",
+            "Our first date was filled with laughter and butterflies...",
+            "As time passed, our love grew stronger with each moment...",
+            "Through ups and downs, we stood by each other...",
+            "And now, we're together & will be forever...",
+            "nam maneli malaii koftha madidhvi...thumba super agithu..",
+            "But pasta really chennagithu alva vaani.."
+        ];
+        let currentStory = 0;
+
+        function updateStory() {
+            storyText.textContent = storySlides[currentStory];
+            prevStory.disabled = currentStory === 0;
+            nextStory.disabled = currentStory === storySlides.length - 1;
+        }
+
+        prevStory.addEventListener('click', () => {
+            if (currentStory > 0) {
+                currentStory--;
+                updateStory();
+            }
+        });
+
+        nextStory.addEventListener('click', () => {
+            if (currentStory < storySlides.length - 1) {
+                currentStory++;
+                updateStory();
+            }
+        });
+
+        updateStory();
+
+        // Love Timeline
+        const timelineEvents = [
+            {date:"October 17,2023" ,event:"Our First Meet Vaaaani in Physics Lab"},
+            { date: "November 29, 2024", event: "Our First Hug and Exactly at 1:26AM , We Expressed Our Feelings Towards Each Other" },
+            { date: "December 9, 2024", event: "Our First kiss in Morning, After You Came Back From Mysuru" },
+            { date: "December 18, 2024", event: "A Big Mouse For My MickeyMouse With a Heartfull Letter...." },
+            { date: "December 22, 202", event: "Remeber that Night Out and That Morning Hug ahaa...!" },
+            { date: "January 1, 2025", event: "You Gave Me a Letter Full Of Kisses & Warmth Of Your Lovee.." },
+            { date: "January 11, 2025", event: "First Time we Cooked in Home.." },
+            { date: "February 1, 2025", event: "A Bubly For My Bublyyy.." },
+            { date: "Today", event: "And Soo Much More ...." },  
+              ];
+
+        const timelineContainer = document.getElementById('timelineEvents');
+
+        timelineEvents.forEach((event, index) => {
+            const eventElement = document.createElement('div');
+            eventElement.className = `mb-8 flex justify-between items-center w-full ${index % 2 === 0 ? 'flex-row-reverse' : ''}`;
+            eventElement.innerHTML = `
+                <div class="order-1 w-5/12"></div>
+                <div class="z-20 flex items-center order-1 bg-pink-500 shadow-xl w-8 h-8 rounded-full">
+                    <h1 class="mx-auto font-semibold text-lg text-white">${index + 1}</h1>
+                </div>
+                <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4">
+                    <h3 class="mb-3 font-bold text-pink-500 text-xl">${event.date}</h3>
+                    <p class="text-sm leading-snug tracking-wide text-gray-600">${event.event}</p>
+                </div>
+            `;
+            timelineContainer.appendChild(eventElement);
+        });
+
+        // Proposal reveal animation
+        const revealBtn = document.getElementById('revealBtn');
+        const proposalMessage = document.getElementById('proposalMessage');
+
+        revealBtn.addEventListener('click', () => {
+            gsap.to(revealBtn, { scale: 20, opacity: 0, duration: 1 });
+            
+            gsap.to(proposalMessage, { opacity: 0, duration: 0.5, onComplete: () => {
+                proposalMessage.innerHTML = `
+                    <div class="text-6xl mb-4">Will You Marry Me?</div>
+                    <div class="sparkle text-4xl">✨💍✨</div>
+                `;
+                gsap.to(proposalMessage, { opacity: 1, scale: 1.2, duration: 1 });
+                showFinalButtons();
+                createFireworks();
+            }});
+        });
+
+        function showFinalButtons() {
+            const buttonsHTML = `
+                <div class="flex justify-center items-center space-x-4 mt-8">
+                    <button id="yesBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transform hover:scale-110 transition duration-300">
+                        Yes, I Will!
+                    </button>
+                    <button id="noBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full transform hover:scale-110 transition duration-300">
+                        I Need Time
+                    </button>
+                </div>
+            `;
+            proposalMessage.insertAdjacentHTML('afterend', buttonsHTML);
+
+            document.getElementById("yesBtn").addEventListener("click", function() {
+                gsap.to("#proposal", { opacity: 0, y: -50, duration: 0.5 });
+                setTimeout(() => {
+                    document.getElementById("proposal").innerHTML = `
+                        <h2 class="script-font text-4xl md:text-6xl text-pink-600 mb-4">I Love You Forever!</h2>
+                        <p class="text-xl md:text-2xl text-gray-700">Thank you for making me the happiest person in the universe!</p>
+                        <div class="mt-8">
+                            <svg class="mx-auto w-24 h-24 text-pink-600 heart-beat" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    `;
+                    gsap.from("#proposal > *", { opacity: 0, y: 50, duration: 1, stagger: 0.2 });
+                    createConfetti();
+                }, 500);
+            });
+
+            document.getElementById("noBtn").addEventListener("mouseover", function() {
+                gsap.to(this, { x: Math.random() * 100 - 50, y: Math.random() * 100 - 50, duration: 0.2 });
+            });
+        }
+
+        function createFireworks() {
+            const fireworksContainer = document.createElement('div');
+            fireworksContainer.style.position = 'fixed';
+            fireworksContainer.style.top = '0';
+            fireworksContainer.style.left = '0';
+            fireworksContainer.style.width = '100%';
+            fireworksContainer.style.height = '100%';
+            fireworksContainer.style.pointerEvents = 'none';
+            document.body.appendChild(fireworksContainer);
+
+            for (let i = 0; i < 50; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.left = Math.random() * 100 + 'vw';
+                firework.style.top = Math.random() * 100 + 'vh';
+                firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                firework.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                firework.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+                fireworksContainer.appendChild(firework);
+            }
+
+            setTimeout(() => {
+                fireworksContainer.remove();
+            }, 2000);
+        }
+
+        function createConfetti() {
+            const confettiContainer = document.createElement('div');
+            confettiContainer.style.position = 'fixed';
+            confettiContainer.style.top = '0';
+            confettiContainer.style.left = '0';
+            confettiContainer.style.width = '100%';
+            confettiContainer.style.height = '100%';
+            confettiContainer.style.pointerEvents = 'none';
+            document.body.appendChild(confettiContainer);
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confettiContainer.appendChild(confetti);
+            }
+
+            setTimeout(() => {
+                confettiContainer.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
